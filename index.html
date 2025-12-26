@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Manhwa Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1f 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Disclaimer Page */
+        .disclaimer-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1f 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .disclaimer-page.hide {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+        }
+
+        .disclaimer-content {
+            background: rgba(30, 10, 40, 0.9);
+            border: 2px solid #ff006e;
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 90%;
+            width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(255, 0, 110, 0.3);
+            animation: fadeInScale 0.6s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .disclaimer-content {
+                padding: 30px 20px;
+                max-width: 95%;
+                max-height: 85vh;
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .disclaimer-content h1 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ff006e, #8b00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @media (max-width: 768px) {
+            .disclaimer-content h1 {
+                font-size: 1.6em;
+            }
+        }
+
+        .disclaimer-content p {
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .disclaimer-content p {
+                font-size: 0.85em;
+                line-height: 1.5;
+                margin-bottom: 12px;
+            }
+        }
+
+        .proceed-btn {
+            background: linear-gradient(45deg, #ff006e, #8b00ff);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 25px rgba(255, 0, 110, 0.4);
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .proceed-btn {
+                padding: 10px 35px;
+                font-size: 1em;
+            }
+        }
+
+        .proceed-btn:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .proceed-btn.clicked:before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .proceed-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 0, 110, 0.6);
+        }
+
+        /* Landing Page */
+        .landing-page {
+            min-height: 100vh;
+            padding: 40px 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .landing-page.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #ff006e, #8b00ff, #00d9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(255, 0, 110, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            .header p {
+                font-size: 1em;
+            }
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        @media (max-width: 768px) {
+            .book-grid {
+                gap: 20px;
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .book-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+        }
+
+        .book-card {
+            position: relative;
+            cursor: pointer;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            animation: fadeIn 0.8s ease-out backwards;
+        }
+
+        .book-card:nth-child(1) { animation-delay: 0.1s; }
+        .book-card:nth-child(2) { animation-delay: 0.2s; }
+        .book-card:nth-child(3) { animation-delay: 0.3s; }
+        .book-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 0;
+            padding-bottom: 141.4%;
+            background: linear-gradient(135deg, #2d1b3d, #1a0a2e);
+            border: 3px solid #ff006e;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff006e;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-cover img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-card:active .book-cover {
+            transform: scale(0.95);
+            box-shadow: 0 5px 20px rgba(255, 0, 110, 0.8);
+        }
+
+        .book-title {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .book-title {
+                font-size: 1em;
+                margin-top: 10px;
+            }
+        }
+
+        /* Heart Animation */
+        .heart {
+            position: fixed;
+            font-size: 30px;
+            color: #ff006e;
+            pointer-events: none;
+            animation: floatHeart 3s ease-out forwards;
+            z-index: 999;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-200px) scale(1.5) rotate(20deg);
+            }
+        }
+
+        /* Shimmer Effect */
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Disclaimer Page -->
+    <div class="disclaimer-page" id="disclaimerPage">
+        <div class="disclaimer-content">
+            <h1>💕 Disclaimer Babe</h1>
+            <p>While the AI has graciously blessed you with a consistent and adorable face across all these images, my face apparently confused the algorithm so much that it decided to just... improvise. The result? A series of "who is this random handsome stranger?" moments that are decidedly NOT Pradipto.</p>
+            <p>Let's be clear: these AI-generated versions of me are basically my gym goals + a very ambitious hair restoration plan (or a really good wig). Consider them aspirational fan fiction.</p>
+            <p>Despite our actual date being a certified disaster, I'd like to think these monthly memory recreations leading up to it are cute enough >.< Think of it as: terrible date, adorable propaganda.</p>
+            <p>So yes, you look perfect in every picture. I look like the AI's "what if Pradipto but different?" experiment. We're both choosing to focus on the memories being cute, not the reality being... well, reality.</p>
+            <p style="font-style: italic; color: #ff006e; margin-top: 20px;">No AI image generators were harmed in the making of these memories. My ego, however, took some hits.</p>
+            <button class="proceed-btn" id="proceedBtn">Proceed to Collection</button>
+        </div>
+    </div>
+
+    <!-- Landing Page -->
+    <div class="landing-page" id="landingPage">
+        <div class="header">
+            <h1>✨ Anime Manhwa Collection ✨</h1>
+            <p>Discover Your Next Adventure</p>
+        </div>
+
+        <div class="book-grid">
+            <div class="book-card" data-title="Mystic Chronicles">
+                <div class="book-cover">
+                    <img src="Anime Scene Request Dec 26 2025.png" alt="Mystic Chronicles">
+                    High Court Spectacle
+                </div>
+                <div class="book-title">High Court Spectacle</div>
+            </div>
+
+            <div class="book-card" data-title="Shadow Realm">
+                <div class="book-cover">
+                    <img src="Burger Queen Manhwa Cover Dec 26 2025 (1).png" alt="Shadow Realm">
+                    Shadow Realm
+                </div>
+                <div class="book-title">The Graduation</div>
+            </div>
+
+            <div class="book-card" data-title="Eternal Bonds">
+                <div class="book-cover">
+                    <img src="Manhwa Cover Request Dec 26 2025.png" alt="Eternal Bonds">
+                    Eternal Bonds
+                </div>
+                <div class="book-title">Being Virtual</div>
+            </div>
+
+            <div class="book-card" data-title="Dragon's Legacy">
+                <div class="book-cover">
+                    <img src="Burger Queen Manhwa Cover Dec 26 2025 (1).png" alt="Shadow Realm">
+                    Dragon's Legacy
+                </div>
+                <div class="book-title">Burger Queen</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Disclaimer Page Logic
+        const disclaimerPage = document.getElementById('disclaimerPage');
+        const landingPage = document.getElementById('landingPage');
+        const proceedBtn = document.getElementById('proceedBtn');
+
+        proceedBtn.addEventListener('click', function() {
+            // Add clicked animation
+            proceedBtn.classList.add('clicked');
+            
+            // Wait for animation then transition
+            setTimeout(() => {
+                disclaimerPage.classList.add('hide');
+                setTimeout(() => {
+                    landingPage.classList.add('show');
+                }, 500);
+            }, 600);
+        });
+
+        // Book Card Click Logic
+        const bookCards = document.querySelectorAll('.book-card');
+
+        bookCards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Create multiple hearts
+                for (let i = 0; i < 15; i++) {
+                    createHeart(e.pageX, e.pageY);
+                }
+            });
+        });
+
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            
+            // Random offset for spread effect
+            const offsetX = (Math.random() - 0.5) * 100;
+            const offsetY = (Math.random() - 0.5) * 50;
+            
+            heart.style.left = (x + offsetX) + 'px';
+            heart.style.top = (y + offsetY) + 'px';
+            
+            document.body.appendChild(heart);
+
+            // Remove heart after animation
+            setTimeout(() => {
+                heart.remove();
+            }, 3000);
+        }
+
+        // Add pulse effect to cards on hover
+        bookCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.querySelector('.book-cover').style.border = '3px solid #8b00ff';
+                this.querySelector('.book-cover').style.boxShadow = '0 15px 50px rgba(139, 0, 255, 0.6)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.querySelector('.book-cover').style.border = '3px solid #ff006e';
+                this.querySelector('.book-cover').style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.5)';
+            });
+        });
+    </script>
+</body>
+</html>
